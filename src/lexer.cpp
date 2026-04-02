@@ -116,19 +116,26 @@ void Lexer::DFA(const string& filename) {
                         lexeme += c;
                         char_processed = true;
                         if (c == '\'') {
-                            if (lexeme.length() == 3) {
-                                state = STATE_CS2;
-                            } else {
-                                state = STATE_STR;
-                            }
-                            addToken(true, state, lexeme);
-                            lexeme = "";
-                            state = STATE_START;
+                            state = STATE_CV;
                         }
                     }
                     break;
-                case STATE_CS2:
                 case STATE_CV:
+                    if (c == '\'') {
+                        lexeme += c;
+                        char_processed = true;
+                        state = STATE_CS1;
+                    } else {
+                        if (lexeme.length() == 3) {
+                            addToken(true, STATE_CS2, lexeme);
+                        } else {
+                            addToken(true, STATE_STR, lexeme);
+                        }
+                        lexeme = "";
+                        state = STATE_START;
+                    }
+                    break;
+                case STATE_CS2:
                 case STATE_SV:
                 case STATE_STR:
                     break;
@@ -251,7 +258,7 @@ void Lexer::DFA(const string& filename) {
     }
 }
 bool Lexer::isWord(char c){
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
 bool Lexer::isDigit(char c){
     return c >= '0' && c <= '9';
