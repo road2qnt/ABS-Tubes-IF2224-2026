@@ -33,17 +33,19 @@ enum state{
     STATE_COL, // 22
     STATE_BEC, // 23
     STATE_PRD, // 24
-    STATE_LPR, // 25
-    STATE_LKOM1, // 26
-    STATE_LISI, // 27
-    STATE_LKOM2, // 28
-    STATE_LKOM, // 29
-    STATE_RPR, // 30
-    STATE_LBR, // 31
-    STATE_RBR, // 32
-    STATE_KOM, // 33
-    STATE_ISI, // 34
-    STATE_KOMF // 35
+    STATE_SCO, // 25
+    STATE_LPR, // 26
+    STATE_LKOM1, // 27
+    STATE_LISI, // 28
+    STATE_LKOM2, // 29
+    STATE_LKOM, // 30
+    STATE_RPR, // 31
+    STATE_LBR, // 32
+    STATE_RBR, // 33
+    STATE_KOM, // 34
+    STATE_ISI, // 35
+    STATE_KOMF, // 36
+    STATE_ERR // 37
 };
 
 class Lexer {
@@ -62,6 +64,7 @@ private:
     bool isWord(char c);
     bool isDigit(char c);
     bool isWhitespace(char c);
+    void addToken(bool finish, int state, string& value);
 };
 
 
