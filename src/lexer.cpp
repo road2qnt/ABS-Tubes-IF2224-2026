@@ -107,17 +107,24 @@ void Lexer::DFA(const string& filename) {
                     }
                     break;
                 case STATE_CS1:
-                    lexeme += c;
-                    char_processed = true;
-                    if (c == '\'') {
-                        if (lexeme.length() == 3) {
-                            state = STATE_CS2; 
-                        } else {
-                            state = STATE_STR; 
-                        }
-                        addToken(true, state, lexeme);
+                    if (c == '\n' || c == '\r') {
+                        addToken(true, STATE_ERR, lexeme);
                         lexeme = "";
                         state = STATE_START;
+                        char_processed = true;
+                    } else {
+                        lexeme += c;
+                        char_processed = true;
+                        if (c == '\'') {
+                            if (lexeme.length() == 3) {
+                                state = STATE_CS2;
+                            } else {
+                                state = STATE_STR;
+                            }
+                            addToken(true, state, lexeme);
+                            lexeme = "";
+                            state = STATE_START;
+                        }
                     }
                     break;
                 case STATE_CS2:
