@@ -74,6 +74,10 @@ void Lexer::DFA(const string& filename) {
                         state = STATE_DOT;
                         lexeme += c;
                         char_processed = true;
+                    } else if (isWord(c)) {
+                        state = STATE_ERR;
+                        lexeme += c;
+                        char_processed = true;
                     } else {
                         addToken(true, state, lexeme);
                         lexeme = "";
@@ -98,6 +102,10 @@ void Lexer::DFA(const string& filename) {
                     break;
                 case STATE_FLO:
                     if (isDigit(c)){
+                        lexeme += c;
+                        char_processed = true;
+                    } else if (isWord(c)) {
+                        state = STATE_ERR;
                         lexeme += c;
                         char_processed = true;
                     } else {
