@@ -1,0 +1,13 @@
+program Literals;
+var
+c: char;
+s: string;
+r: real;
+begin
+c := 'A';
+s := 'Hello World';
+r := 3.14;
+writeln(c);
+writeln(s);
+writeln(r + 100.05);
+end.

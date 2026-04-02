@@ -1,0 +1,10 @@
+program Comments;
+{ ini komentar kurung kurawal }
+var
+a: integer;
+begin
+(* ini komentar
+   bintang kurung *)
+a := 42;
+{ komentar lagi }
+end.

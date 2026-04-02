@@ -296,7 +296,7 @@ void Lexer::addToken(bool finish, int state, string& value) {
             case STATE_ERR:
                 tokens.push_back(Token(TokenType::ERROR, value)); break;
             default:
-                break;
+                tokens.push_back(Token(TokenType::ERROR, value)); break;
         }
     }
 }
