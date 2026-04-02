@@ -1,11 +1,8 @@
-#include "token.h"
-
-
+#include "token.hpp"
 Token::Token(TokenType type, const string& value) {
     this->type = type;
     this->value = value;
 }
-
 string tokenToString(TokenType type) {
     switch (type) {
         case TokenType::INTCON:       return "intcon";
@@ -64,7 +61,6 @@ string tokenToString(TokenType type) {
         default:                      return "unknown";
     }
 }
-
 string toLower(const string& str) {
     string result = str;
     for (int i = 0; i < result.size(); i++) {
@@ -74,10 +70,8 @@ string toLower(const string& str) {
     }
     return result;
 }
-
 TokenType keyword(const string& ident) {
     string lower = toLower(ident);
-
     if (lower == "not")       return TokenType::NOTSY;
     if (lower == "div")       return TokenType::IDIV;
     if (lower == "mod")       return TokenType::IMOD;
@@ -105,6 +99,5 @@ TokenType keyword(const string& ident) {
     if (lower == "to")        return TokenType::TOSY;
     if (lower == "downto")    return TokenType::DOWNTOSY;
     if (lower == "then")      return TokenType::THENSY;
-
     return TokenType::IDENT;
 }
