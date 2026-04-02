@@ -21,6 +21,8 @@ bool Lexer::transisiFirstSymbol(char c){
     }
     return false;
 }
+// Membaca file karakter per karakter dan menjalankan DFA.
+// char_processed mengontrol apakah karakter saat ini sudah dikonsumsi.
 void Lexer::DFA(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()){
@@ -109,9 +111,9 @@ void Lexer::DFA(const string& filename) {
                     char_processed = true;
                     if (c == '\'') {
                         if (lexeme.length() == 3) {
-                            state = STATE_CV; 
-                        } else {
                             state = STATE_CS2; 
+                        } else {
+                            state = STATE_STR; 
                         }
                         addToken(true, state, lexeme);
                         lexeme = "";
@@ -265,10 +267,10 @@ void Lexer::addToken(bool finish, int state, string& value) {
             case STATE_FLO:
                 tokens.push_back(Token(TokenType::REALCON, value));
                 break;
-            case STATE_CV:
+            case STATE_CS2:
                 tokens.push_back(Token(TokenType::CHARCON, value));
                 break;
-            case STATE_CS2:
+            case STATE_STR:
                 tokens.push_back(Token(TokenType::STRING, value));
                 break;
             case STATE_PLS: tokens.push_back(Token(TokenType::PLUS)); break;
