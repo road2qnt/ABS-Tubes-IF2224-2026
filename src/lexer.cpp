@@ -17,7 +17,7 @@ bool Lexer::transisiFirstSymbol(char c){
         case ')' : state = STATE_RPR; return true;
         case '[' : state = STATE_LBR; return true;
         case ']' : state = STATE_RBR; return true;
-        case '{' : state = STATE_LKOM1; return true;
+        case '{' : state = STATE_KOM; return true;
     }
     return false;
 }
@@ -135,10 +135,6 @@ void Lexer::DFA(const string& filename) {
                         state = STATE_START;
                     }
                     break;
-                case STATE_CS2:
-                case STATE_SV:
-                case STATE_STR:
-                    break;
                 case STATE_PLS:
                 case STATE_MIN:
                 case STATE_TMS:
@@ -165,8 +161,6 @@ void Lexer::DFA(const string& filename) {
                         lexeme = ""; state = STATE_START;
                     }
                     break;
-                case STATE_EQ2:
-                    break;
                 case STATE_LSS: 
                     if (c == '=') {
                         state = STATE_LEQ; lexeme += c; char_processed = true;
@@ -186,10 +180,6 @@ void Lexer::DFA(const string& filename) {
                         addToken(true, state, lexeme); lexeme = ""; state = STATE_START;
                     }
                     break;
-                case STATE_NEQ:
-                case STATE_LEQ:
-                case STATE_GEQ:
-                    break;
                 case STATE_COL: 
                     if (c == '=') {
                         state = STATE_BEC; lexeme += c; char_processed = true;
@@ -198,44 +188,40 @@ void Lexer::DFA(const string& filename) {
                         addToken(true, state, lexeme); lexeme = ""; state = STATE_START;
                     }
                     break;
-                case STATE_BEC:
-                    break;
                 case STATE_PRD: 
                     addToken(true, state, lexeme); lexeme = ""; state = STATE_START;
                     break;
-                case STATE_LPR: 
+                case STATE_LPR:
                     if (c == '*') {
-                        state = STATE_KOM; lexeme += c; char_processed = true;
+                        state = STATE_LKOM1; lexeme += c; char_processed = true;
                     } else {
                         addToken(true, state, lexeme); lexeme = ""; state = STATE_START;
                     }
                     break;
-                case STATE_LKOM1: 
-                    state = STATE_LISI;
-                case STATE_LISI:
-                    lexeme += c; char_processed = true;
-                    if (c == '}') {
-                        state = STATE_LKOM2;
-                        addToken(true, state, lexeme); lexeme = ""; state = STATE_START;
-                    }
-                    break;
-                case STATE_LKOM2:
-                case STATE_LKOM:
-                    break;
-                case STATE_KOM: 
+                case STATE_KOM:
+                    state = STATE_ISI;
                 case STATE_ISI:
                     lexeme += c; char_processed = true;
-                    if (c == '*') state = STATE_KOMF;
-                    else state = STATE_ISI;
+                    if (c == '}') {
+                        state = STATE_KOMF;
+                        addToken(true, state, lexeme); lexeme = ""; state = STATE_START;
+                    }
                     break;
-                case STATE_KOMF: 
+                case STATE_LKOM1:
+                case STATE_LISI:
+                    lexeme += c; char_processed = true;
+                    if (c == '*') state = STATE_LKOM2;
+                    else state = STATE_LISI;
+                    break;
+                case STATE_LKOM2:
                     lexeme += c; char_processed = true;
                     if (c == ')') {
+                        state = STATE_LKOM;
                         addToken(true, state, lexeme); lexeme = ""; state = STATE_START;
                     } else if (c == '*') {
-                        state = STATE_KOMF;
+                        state = STATE_LKOM2;
                     } else {
-                        state = STATE_ISI;
+                        state = STATE_LISI;
                     }
                     break;
                 case STATE_ERR:
@@ -306,8 +292,8 @@ void Lexer::addToken(bool finish, int state, string& value) {
             case STATE_RPR: tokens.push_back(Token(TokenType::RPARENT)); break;
             case STATE_LBR: tokens.push_back(Token(TokenType::LBRACK)); break;
             case STATE_RBR: tokens.push_back(Token(TokenType::RBRACK)); break;
-            case STATE_LKOM2:
             case STATE_KOMF:
+            case STATE_LKOM:
                 tokens.push_back(Token(TokenType::COMMENT, value)); break;
             case STATE_ERR:
                 tokens.push_back(Token(TokenType::ERROR, value)); break;

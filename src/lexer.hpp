@@ -13,8 +13,7 @@ enum state{
     STATE_CS1, 
     STATE_CS2, 
     STATE_CV, 
-    STATE_SV, 
-    STATE_STR, 
+    STATE_STR,
     STATE_PLS, 
     STATE_MIN, 
     STATE_TMS, 
@@ -35,14 +34,14 @@ enum state{
     STATE_LKOM1, 
     STATE_LISI, 
     STATE_LKOM2, 
-    STATE_LKOM, 
     STATE_RPR, 
     STATE_LBR, 
     STATE_RBR, 
-    STATE_KOM, 
-    STATE_ISI, 
-    STATE_KOMF, 
-    STATE_ERR 
+    STATE_KOM,
+    STATE_ISI,
+    STATE_KOMF,
+    STATE_LKOM,
+    STATE_ERR
 };
 class Lexer {
 private:
