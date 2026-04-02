@@ -122,7 +122,6 @@ void Lexer::DFA(const string& filename) {
                     break;
                 case STATE_CV:
                     if (c == '\'') {
-                        lexeme += c;
                         char_processed = true;
                         state = STATE_CS1;
                     } else {
